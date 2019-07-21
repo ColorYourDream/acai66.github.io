@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <%- partial('partials/head') %>
+  <body>
+
+<script type="text/javascript" src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/av-min.js"></script>
+<script type="text/javascript" src="/js/Valine.min.js"></script>
+
+<div id="contentleft">
+    <%- partial('partials/header') %>
+ 
+    <main>
+       
+      <%- body %>
+       
+
+    </main>
+
+    <% if(
+      theme.leancloud.comment && 
+      (is_post() || page.type === 'about' || page.type === 'friends')
+    ){ %>
+      <%- partial('components/comment') %>
+    <% } %>
+    <%- partial('components/bottom-bar') %>
+    <%- partial('components/layer') %>
+    <%- partial('components/share') %>
+    <%- partial('components/analytics') %>
+<%- partial('partials/footer') %>
+<div id="myscripthere"></div>
+</div> 
+    
+ 
+
+    <% if (theme.custom_scripts){ %>
+      <%- js(theme.custom_scripts) %>
+    <% } %>
+
+
+
+<!--<script type="text/javascript"
+color="0,0,255" opacity='0.7' zIndex="2" count="120" src="/js/canvas-nest.js"></script>-->
+
+
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+<script type="text/javascript" src="/js/love.js"></script>
+
+
+<div class="snow-container" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:100001;"></div>
+<!--<script type="text/javascript" src="/js/all.js"></script>-->
+<div id="myscript2"></div>
+<script>
+function loadScript(src, callback) {
+  var script = document.createElement('script'),
+    head = document.getElementById('myscript2');
+  script.type = 'text/javascript';
+  script.charset = 'UTF-8';
+  script.src = src;
+  if (script.addEventListener) {
+    script.addEventListener('load', function () {
+      callback();
+    }, false);
+  } else if (script.attachEvent) {
+    script.attachEvent('onreadystatechange', function () {
+      var target = window.event.srcElement;
+      if (target.readyState == 'loaded') {
+        callback();
+      }
+    });
+  }
+  head.appendChild(script);
+}
+function callb(){console.log('onload');}
+
+                if ((navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i))) {
+                    /*window.location.href="你的手机版地址";*/
+
+                }
+                else {
+                    /*window.location.href="你的电脑版地址";    */
+                    loadScript('/js/canvas-nest.js', callb);
+                    loadScript('/js/all.js', callb);
+                }
+</script>
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c4a7829e2039c5cf7d75161f05d61b15";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+
+<script src="/js/pjax.js" type="text/javascript"></script>
+
+<script> 
+
+function loadScript(src, callback) {
+  var script = document.createElement('script'),
+    head = document.getElementById('myscripthere');
+  script.type = 'text/javascript';
+  script.charset = 'UTF-8';
+  script.src = src;
+  if (script.addEventListener) {
+    script.addEventListener('load', function () {
+      callback();
+    }, false);
+  } else if (script.attachEvent) {
+    script.attachEvent('onreadystatechange', function () {
+      var target = window.event.srcElement;
+      if (target.readyState == 'loaded') {
+        callback();
+      }
+    });
+  }
+  head.appendChild(script);
+}
+function callb(){console.log('onload');}
+function calljs(){
+      loadScript('/js/copy.js', callb);
+      loadScript('/js/layer.js', callb);
+      loadScript('/js/scroll.js', callb);
+      loadScript('/js/backTop.js', callb);
+      loadScript('/js/header.js', callb);
+      loadScript('/js/passage.js', callb);
+      loadScript('/js/share.js', callb);
+      loadScript('/js/reward.js', callb);
+      loadScript('/js/mathjax.js', callb);
+      loadScript('/js/time.js', callb);
+      loadScript('//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js', callb);
+}
+
+  function _updateCommentNum() {
+    const infoDOM = document.querySelector('#site-comment-info');
+    const url = window.location.pathname;
+    if(!infoDOM){
+        return;    }
+    setTimeout(() => {
+        let query = new AV.Query('Comment');
+        query.equalTo('url', url);
+        query.count()
+          .then(num => {
+            infoDOM.innerHTML = `共${num}条评论`;
+            running = false;
+          });
+      }, 2000);
+  }
+
+comm=function (){
+  const commentDOM = document.querySelector('#site-comment');
+    if(!commentDOM) {
+      return;
+    }
+
+
+  new Valine({
+      el: '#site-comment',
+      appId: 'lMTFXvlCNpAepp8JI7qiaago-gzGzoHsz',
+      appKey: 'q7L0CAJq5s0xUV1mKqd9J2zI',
+      notify: true,
+      visitor: true,
+      verify: true,
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      avatar: "robohash",
+      path: window.location.pathname
+    });
+}
+ $(document).pjax('a[target!=_blank]', '#contentleft', {fragment:'#contentleft', timeout:8000}); 
+    $(document).on('pjax:complete', function() {
+	//alert(window.location.pathname);
+                calljs();
+	_updateCommentNum();
+	comm();
+    });
+</script>
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  </body>
+</html>
